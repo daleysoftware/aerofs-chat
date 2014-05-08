@@ -7,15 +7,17 @@ Your messages are transferred via AeroFS channels and are only accessible by you
 
 This project is a work in progress.
 
-Instructions
+Usage
 ---
 
 To run AeroChat, download the aerochat executable and place it in an AeroFS shared folder. Double click on the application and an AeroChat chatroom will open. All members of the shared folder can participate in this chatroom.
 
-Platforms
----
 Supported platforms: Mac OS X and common Linux distributions. Tested on Ubuntu 12.04 LTS.
 
-Author
+Developers
 ---
-Matt Pillar <mpillar@uwaterloo.ca>
+Use the following command to run the unit tests for this project:
+
+    python src/run_tests.py
+
+To build a new AeroChat executable, simply run `./build.sh`. I will periodically commit updated `aerochat` executables, so the version in this repository should satisfy the needs of most.
