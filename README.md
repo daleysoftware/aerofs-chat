@@ -5,7 +5,7 @@ AeroChat is a secure chat service built on top of the AeroFS cloud platform.
 
 Your messages are transferred via AeroFS channels and are only accessible by you and the intended recipients of your message. No third party can view your messages. Ever.
 
-This project is a work in progress.
+This project is a work in progress and was originally developed during a hackathon at AeroFS HQ.
 
 Usage
 ---
