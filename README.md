@@ -14,7 +14,7 @@ To run AeroChat, download the aerochat executable and place it in an AeroFS shar
 
 Platforms
 ---
-Supported platforms: Mac OS X and common Linux distributions.
+Supported platforms: Mac OS X and common Linux distributions. Tested on Ubuntu 12.04 LTS.
 
 Author
 ---
