@@ -1,4 +1,6 @@
-aerochat
+AeroChat
 ========
 
-A chat service built on top of the AeroFS cloud platform.
+AeroChat is a chat service built on top of the AeroFS cloud platform.
+
+This project is a work in progress.
