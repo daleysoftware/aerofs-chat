@@ -18,6 +18,8 @@ Or run it from the command line:
 
 Supported platforms: Mac OS X and common Linux distributions. Tested on Ubuntu 12.04 LTS.
 
+<img align="center" src="https://raw.githubusercontent.com/mpillar/aerochat/master/img/example.png"/>
+
 Developers
 ---
 Use the following command to run the unit tests for this project:
