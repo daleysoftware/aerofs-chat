@@ -55,7 +55,10 @@ class Application(Frame):
 
     def add_messages_to_text_received(self, messages):
         for m in messages:
-            self.text_received.insert(END, m.sender, "bold")
+            if m.sender == self.mdb.sender:
+                self.text_received.insert(END, m.sender)
+            else:
+                self.text_received.insert(END, m.sender, "bold")
             self.text_received.insert(END, ": ")
             self.text_received.insert(END, m.text)
             self.text_received.insert(END, "\n")
