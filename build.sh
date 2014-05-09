@@ -14,12 +14,13 @@ encoded=$(cat aerochat.zip | openssl base64 -e)
 cat > aerochat.sh <<EOF
 #!/bin/bash
 set -eu
-clear
 cd \$(dirname \$0)
 mkdir -p .aerochat/messages
 cd .aerochat
 echo "$encoded" | openssl base64 -d > aerochat.zip
-python aerochat.zip
+python aerochat.zip &
+disown
+exit 0
 EOF
 
 chmod a+x aerochat.sh
