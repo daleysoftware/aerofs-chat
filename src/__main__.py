@@ -78,7 +78,8 @@ class Application(Frame):
     def submit_draft(self):
         text = self.text_draft.get(1.0, END).strip()
         self.text_draft.delete(1.0, END)
-        self.mdb.publish_message(text)
+        if len(text) > 0:
+            self.mdb.publish_message(text)
 
     def destroy(self):
         self.message_poller.stop()
