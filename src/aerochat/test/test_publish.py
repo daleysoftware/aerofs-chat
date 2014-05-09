@@ -4,7 +4,7 @@ import shutil
 import tempfile
 import aerochat.database
 
-class TestJson(unittest.TestCase):
+class TestPublish(unittest.TestCase):
 
     def setUp(self):
         self.temp_dir = tempfile.mkdtemp()
