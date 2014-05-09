@@ -20,10 +20,12 @@ class Application(Frame):
         self.text_draft["background"] = "#F5F5F5"
         self.text_draft["height"] = 4
         self.text_draft["width"] = 26
+        self.text_draft["wrap"] = WORD
         self.text_draft.focus_force()
+        self.text_draft.bind("<KeyRelease>", self.key_release_callback)
         self.text_draft.pack(side=LEFT)
 
-        self.button_send = Button(self.frame_bottom, command=self.button_submit_pressed)
+        self.button_send = Button(self.frame_bottom, command=self.submit_draft)
         self.button_send["text"] = "Send"
         self.button_send["height"] = 1
         self.button_send.pack(side=RIGHT)
@@ -38,6 +40,7 @@ class Application(Frame):
         self.text_received["background"] = "#E4EEF3"
         self.text_received["height"] = 25
         self.text_received["width"] = 50
+        self.text_received["wrap"] = WORD
         self.text_received.config(state=DISABLED)
         self.text_received.config(yscrollcommand=self.scrollbar_received.set)
         self.scrollbar_received.config(command=self.text_received.yview)
@@ -57,16 +60,26 @@ class Application(Frame):
             self.text_received.insert(END, m.text)
             self.text_received.insert(END, "\n")
 
+        self.text_received.yview(END)
+
     def add_first_messages_to_text_received(self, messages):
         if len(messages) > 0:
-            self.text_received.insert(END, "--- Earlier Messages ---\n")
+            self.text_received.insert(END, "--- Old Messages ---\n", "bold")
             self.add_messages_to_text_received(messages)
-            self.text_received.insert(END, "--- New Messages ---\n")
+            self.text_received.insert(END, "--- New Messages ---\n", "bold")
 
-    def button_submit_pressed(self):
+    def key_release_callback(self, event):
+        if event.keysym == 'Return':
+            self.submit_draft()
+
+    def submit_draft(self):
         text = self.text_draft.get(1.0, END).strip()
         self.text_draft.delete(1.0, END)
         self.mdb.publish_message(text)
+
+    def destroy(self):
+        self.message_poller.stop()
+        Frame.destroy(self)
 
 def main():
     mdb = aerochat.database.MessageDatabase(getpass.getuser(), "./messages")

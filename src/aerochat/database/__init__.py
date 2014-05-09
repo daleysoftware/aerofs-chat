@@ -71,9 +71,13 @@ class MessagePoller(threading.Thread):
         self.mdb = mdb
         self.last_timestamp = last_timestamp
         self.callback = callback
+        self.more_todo = True
+
+    def stop(self):
+        self.more_todo = False
 
     def run(self):
-        while True:
+        while self.more_todo:
             # Poll for messages
             messages = self.mdb.get_latest_messages(self.last_timestamp)
 
@@ -82,4 +86,4 @@ class MessagePoller(threading.Thread):
                 self.callback(messages)
 
             # Sleep for a small amount of time.
-            time.sleep(0.5)
+            time.sleep(0.3)
