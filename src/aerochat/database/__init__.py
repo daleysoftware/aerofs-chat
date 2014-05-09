@@ -1,6 +1,7 @@
 import json
 import os
 import time
+import threading
 
 current_milli_time = lambda: int(round(time.time() * 1000))
 
@@ -63,3 +64,22 @@ class MessageDatabase:
             with open(os.path.join(self.db_dir, f), "r") as fd:
                 result.append(Message.from_json(fd.read()))
         return result
+
+class MessagePoller(threading.Thread):
+    def __init__(self, mdb, last_timestamp, callback):
+        threading.Thread.__init__(self)
+        self.mdb = mdb
+        self.last_timestamp = last_timestamp
+        self.callback = callback
+
+    def run(self):
+        while True:
+            # Poll for messages
+            messages = self.mdb.get_latest_messages(self.last_timestamp)
+
+            if len(messages) > 0:
+                self.last_timestamp = messages[-1].timestamp
+                self.callback(messages)
+
+            # Sleep for a small amount of time.
+            time.sleep(0.5)

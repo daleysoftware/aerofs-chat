@@ -4,23 +4,12 @@ import getpass
 import aerochat.database
 
 class Application(Frame):
-    def add_messages_to_text_received(self, messages):
-        for m in messages:
-            self.text_received.insert(END, m.sender, "bold")
-            self.text_received.insert(END, ": ")
-            self.text_received.insert(END, m.text)
-            self.text_received.insert(END, "\n")
-
-    def add_first_messages_to_text_received(self, messages):
-        self.text_received.insert(END, "--- Earlier Messages ---\n")
-        self.add_messages_to_text_received(messages)
-        self.text_received.insert(END, "--- New Messages ---\n")
-
     def __init__(self, mdb, master=None):
         Frame.__init__(self, master)
         self.mdb = mdb
         messages = mdb.get_latest_messages(0, 10)
         self.last_timestamp = 0 if len(messages) == 0 else messages[-1].timestamp
+        self.message_poller = aerochat.database.MessagePoller(mdb, self.last_timestamp, self.poller_callback)
         self.pack()
 
         self.frame_bottom = Frame(self)
@@ -34,7 +23,7 @@ class Application(Frame):
         self.text_draft.focus_force()
         self.text_draft.pack(side=LEFT)
 
-        self.button_send = Button(self.frame_bottom)
+        self.button_send = Button(self.frame_bottom, command=self.button_submit_pressed)
         self.button_send["text"] = "Send"
         self.button_send["height"] = 1
         self.button_send.pack(side=RIGHT)
@@ -54,17 +43,39 @@ class Application(Frame):
         self.scrollbar_received.config(command=self.text_received.yview)
         self.text_received.pack(side=BOTTOM)
 
+        self.message_poller.start()
+
+    def poller_callback(self, messages):
+        self.text_received.config(state=NORMAL)
+        self.add_messages_to_text_received(messages)
+        self.text_received.config(state=DISABLED)
+
+    def add_messages_to_text_received(self, messages):
+        for m in messages:
+            self.text_received.insert(END, m.sender, "bold")
+            self.text_received.insert(END, ": ")
+            self.text_received.insert(END, m.text)
+            self.text_received.insert(END, "\n")
+
+    def add_first_messages_to_text_received(self, messages):
+        if len(messages) > 0:
+            self.text_received.insert(END, "--- Earlier Messages ---\n")
+            self.add_messages_to_text_received(messages)
+            self.text_received.insert(END, "--- New Messages ---\n")
+
+    def button_submit_pressed(self):
+        text = self.text_draft.get(1.0, END).strip()
+        self.text_draft.delete(1.0, END)
+        self.mdb.publish_message(text)
+
 def main():
     mdb = aerochat.database.MessageDatabase(getpass.getuser(), "./messages")
-
-    # TODO needs more work...
-
     root = Tk()
     root.minsize(250, 400)
     root.maxsize(250, 400)
     app = Application(mdb, master=root)
     app.master.title("AeroChat")
-    app.mainloop()
+    root.mainloop()
 
 if __name__ == '__main__':
     main()
