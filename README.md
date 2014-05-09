@@ -12,6 +12,10 @@ Usage
 
 To run AeroChat, download the aerochat executable and place it in an AeroFS shared folder. Double click on the application and an AeroChat chatroom will open. All members of the shared folder can participate in this chatroom.
 
+Or run it from the command line:
+
+    ./aerochat
+
 Supported platforms: Mac OS X and common Linux distributions. Tested on Ubuntu 12.04 LTS.
 
 Developers
