@@ -1,7 +1,7 @@
-AeroChat
+AeroFS Chat
 ===
 
-AeroChat is a secure chat service built on top of the AeroFS cloud platform.
+AeroFS Chat (a.k.a. AeroChat) is a secure chat service built on top of the AeroFS cloud platform.
 
 Your messages are transferred via AeroFS channels and are only accessible by you and the intended recipients of your message. No third party can view your messages. Ever.
 
@@ -18,7 +18,7 @@ Or run it from the command line:
 
 Supported platforms: Mac OS X and common Linux distributions. Tested on Ubuntu 12.04 LTS.
 
-<img align="center" src="https://raw.githubusercontent.com/mpillar/aerochat/master/img/example.png"/>
+<img align="center" src="https://raw.githubusercontent.com/mpillar/aerofs-chat/master/img/example.png"/>
 
 Developers
 ---
